@@ -1,0 +1,7 @@
+syntax = "proto3";
+
+// Incorrect.
+message GetBookRequest {
+  // This is wrong; it should be spelled `name`.
+  string book = 1;
+}

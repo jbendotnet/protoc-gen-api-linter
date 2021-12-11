@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package testdata.v1;
+
+option go_package = "github.com/jbendotnet/protoc-gen-api-linter/internal/gen/proto/go/apilinter/v1;apilinterv1";
+option java_multiple_files = true;
+option java_outer_classname = "ServiceOkProto";
+option java_package = "com.testdata.v1";
+
+message GetAuthorRequest {
+  string name = 1;
+}

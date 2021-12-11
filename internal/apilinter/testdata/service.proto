@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package testdata.v1;
+
+option go_package = "github.com/jbendotnet/protoc-gen-api-linter/internal/gen/proto/go/apilinter/v1;apilinterv1";
+option java_multiple_files = true;
+option java_outer_classname = "ServiceProto";
+option java_package = "com.testdata.v1";
+
+// Incorrect.
+message GetBookRequest {
+  // This is wrong; it should be spelled `name`.
+  string book = 1;
+}
