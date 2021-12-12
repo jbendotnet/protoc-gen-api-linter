@@ -38,3 +38,4 @@ gen
 - [x] Expose base `api-linter` functionality
 - [x] Add support for enabling and disabling one or more rules
 - [ ] Add support for using a local config file
+- [ ] Add to Buf BSR for remote code generation
