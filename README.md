@@ -25,11 +25,12 @@ go install ./cmd/protoc-gen-api-linter
 Then run `buf generate --debug -vv` and you should see the following:
 
 ```
-$ tree reports/
-reports/
-└── api_linter_report.json
+$ tree gen
+gen
+└── reports
+    └── apilinter-report.json
 
-0 directories, 1 file
+1 directory, 1 file
 ```
 
 ## Roadmap
