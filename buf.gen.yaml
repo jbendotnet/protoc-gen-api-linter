@@ -6,5 +6,9 @@ managed:
 plugins:
   - name: api-linter
     out: reports/
-    opt: paths=source_relative
+    opt:
+      - paths=source_relative
+      - report_pretty_print=false
+      - report_filename=hello.json
+      - disable_rule=core::0131::request-unknown-fields
     path: ./bin/protoc-gen-api-linter

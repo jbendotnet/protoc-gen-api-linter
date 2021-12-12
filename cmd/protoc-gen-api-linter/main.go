@@ -1,9 +1,9 @@
 package main
 
 import (
-	"encoding/json"
 	"flag"
 	"fmt"
+	"log"
 	"os"
 
 	"github.com/jbendotnet/protoc-gen-api-linter/internal/apilinter"
@@ -11,10 +11,9 @@ import (
 	"google.golang.org/protobuf/compiler/protogen"
 )
 
-var (
-	versionFlag bool
-	ruleEnableFlag flagvar.StringSet
-	ruleDisableFlag flagvar.StringSet
+const (
+	appName               = "protoc-gen-api-linter"
+	defaultReportFilename = "api_linter.json"
 )
 
 var (
@@ -23,42 +22,53 @@ var (
 	date    = "unknown"
 )
 
+type config struct {
+	PrintVersion         bool
+	LinterEnableRule     flagvar.StringSet
+	LinterDisableRule    flagvar.StringSet
+	PluginReportFilename string
+	ReportPrettyPrint    bool
+}
+
 func main() {
+	// set logger to pint to stderr
+	log.SetOutput(os.Stderr)
 
-	flag.BoolVar(&versionFlag, "version", false, "Print version and exit.")
-	flag.Var(&ruleEnableFlag, "enable-rule", "Enable a rule with the given name.\nMay be specified multiple times.")
-	flag.Var(&ruleDisableFlag, "disable-rule", "Disable a rule with the given name.\nMay be specified multiple times.")
-	flag.Parse()
+	var cfg config
+	fs := flag.NewFlagSet(appName, flag.ExitOnError)
+	fs.BoolVar(&cfg.PrintVersion, "version", false, "Print version and exit.")
+	fs.Var(&cfg.LinterEnableRule, "enable_rule", "Enable a rule with the given name.\nMay be specified multiple times.")
+	fs.Var(&cfg.LinterDisableRule, "disable_rule", "Disable a rule with the given name.\nMay be specified multiple times.")
+	fs.StringVar(&cfg.PluginReportFilename, "report_filename", defaultReportFilename, "Disable a rule with the given name.\nMay be specified multiple times.")
+	fs.BoolVar(&cfg.ReportPrettyPrint, "report_pretty_print", false, "Pretty print JSON reports")
 
-	if versionFlag {
+	if cfg.PrintVersion {
 		fmt.Printf("Version %v, commit %v, built at %v\n", version, commit, date)
 		os.Exit(0)
 	}
 
-	protogen.Options{}.Run(runPlugin)
+	// TODO work out where the ordering issue is with the FlagSet
+	protogen.Options{ParamFunc: fs.Set}.Run(runPlugin(&cfg))
 }
 
-func runPlugin(gen *protogen.Plugin) error {
-	fl, err := apilinter.NewFileLinter()
+// runPlugin configures our plugin instance and returns a
+// well configured Run func
+func runPlugin(cfg *config) func(gen *protogen.Plugin) error {
+	opts := apilinter.PluginOptions{
+		Linter: apilinter.LinterOptions{
+			EnabledRules:  cfg.LinterEnableRule.Values(),
+			DisabledRules: cfg.LinterDisableRule.Values(),
+		},
+		ReportFilename:    cfg.PluginReportFilename,
+		ReportPrettyPrint: cfg.ReportPrettyPrint,
+	}
+
+	plg, err := apilinter.NewPlugin(opts)
 	if err != nil {
-		return fmt.Errorf("protogen.Plugin.Run: %w", err)
+		return func(gen *protogen.Plugin) error {
+			return fmt.Errorf("runPlugin: %w", err)
+		}
 	}
 
-	res, err := fl.LintFiles(gen.Files)
-	if err != nil {
-		return fmt.Errorf("protogen.Plugin.Run: %w", err)
-	}
-
-	reportJSON, err := json.MarshalIndent(res, "", "    ")
-	if err != nil {
-		return fmt.Errorf("protogen.Plugin.Run: json.Encode: %w", err)
-	}
-
-	const filename = "api_linter_report.json"
-	g := gen.NewGeneratedFile(filename, "")
-	if _, err := g.Write(reportJSON); err != nil {
-		return fmt.Errorf("protogen.Plugin.Run: g.Write: %w", err)
-	}
-
-	return nil
+	return plg.Run
 }

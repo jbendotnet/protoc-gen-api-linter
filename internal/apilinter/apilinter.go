@@ -10,21 +10,39 @@ import (
 	"google.golang.org/protobuf/compiler/protogen"
 )
 
-type FileLinter struct {
+type LinterOptions struct {
+	EnabledRules  []string
+	DisabledRules []string
+}
+
+type Linter struct {
 	linter *lint.Linter
 }
 
-func NewFileLinter() (*FileLinter, error) {
-	reg := lint.NewRuleRegistry()
-	if err := rules.Add(reg); err != nil {
+func NewLinter(opts LinterOptions) (*Linter, error) {
+	// set up default rules
+	lintRules := lint.NewRuleRegistry()
+	if err := rules.Add(lintRules); err != nil {
 		return nil, fmt.Errorf("rules.Add: %w", err)
 	}
+	// configure linter
+	lintConfigs := lint.Configs{}
+	if len(opts.EnabledRules) > 0 {
+		lintConfigs = append(lintConfigs, lint.Config{
+			EnabledRules: opts.EnabledRules,
+		})
+	}
+	if len(opts.DisabledRules) > 0 {
+		lintConfigs = append(lintConfigs, lint.Config{
+			DisabledRules: opts.DisabledRules,
+		})
+	}
 
-	linter := lint.New(reg, lint.Configs{})
-	return &FileLinter{linter: linter}, nil
+	linter := lint.New(lintRules, lintConfigs)
+	return &Linter{linter: linter}, nil
 }
 
-func (fl *FileLinter) LintFiles(files []*protogen.File) ([]lint.Response, error) {
+func (fl *Linter) LintFiles(files []*protogen.File) ([]lint.Response, error) {
 	// convert protogen.File's to desc.FileDescriptor's
 	var protos []*descriptor.FileDescriptorProto
 	for _, f := range files {
