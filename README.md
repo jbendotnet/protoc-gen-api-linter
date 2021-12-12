@@ -20,7 +20,7 @@ First, you need to generate the binary:
 go install ./cmd/protoc-gen-api-linter
 ```
 
-> `buf.gen.yaml` is configured in this repo to use the binary in `bin/`
+> `buf.gen.yaml` is configured in this repo to use the binary installed in `$GOPATH/bin`
 
 Then run `buf generate --debug -vv` and you should see the following:
 
