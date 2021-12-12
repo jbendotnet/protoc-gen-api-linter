@@ -32,4 +32,8 @@ reports/
 0 directories, 1 file
 ```
 
+## Roadmap
 
+- [x] Expose base `api-linter` functionality
+- [x] Add proto opts for enabling and disabling one or more rules
+- [ ] Add proto opt for local config file
