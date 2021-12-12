@@ -13,6 +13,6 @@ jobs:
         uses: actions/setup-go@v2
         with:
           go-version: 1.17.3
-      - name: ci
-        if: success()
-        run: make install && make ci
+      # - name: ci
+      #   if: success()
+      #   run: make install && make ci
