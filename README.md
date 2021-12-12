@@ -1,5 +1,7 @@
 # Protoc Gen API Linter
 
+**Currently early ALPHA, APIs can and will change**
+
 Wraps https://github.com/googleapis/api-linter as a protoc plugin.
 
 ## Template unit tests
