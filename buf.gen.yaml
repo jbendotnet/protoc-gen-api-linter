@@ -9,7 +9,7 @@ plugins:
     opt:
       - paths=source_relative
       - report_pretty_print=true
-      - report_filename=hello.json
+      - report_filename=apilinter-report.json
       - disable_rule=core::0131::request-unknown-fields
       - disable_rule=core::0131::request-name-required
     path: ./bin/protoc-gen-api-linter
