@@ -4,7 +4,7 @@
 
 Wraps https://github.com/googleapis/api-linter as a protoc plugin.
 
-## Template unit tests
+## Protosets for unit tests
 
 If you add or change the protos in `internal/apilinter/testdata` do this to regenerate:
 
