@@ -41,11 +41,12 @@ var (
 // cli config
 type config struct {
 	PrintVersion         bool
-	LinterEnabledRules     flagvar.StringSet
-	LinterDisabledRules    flagvar.StringSet
+	LinterEnabledRules   flagvar.StringSet
+	LinterDisabledRules  flagvar.StringSet
 	PluginReportFilename string
 	ReportPrettyPrint    bool
 }
+
 var cfg config
 
 func main() {
