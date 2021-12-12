@@ -7,4 +7,3 @@ plugins:
   - name: api-linter
     out: reports/
     opt: paths=source_relative
-    path: ./bin/protoc-gen-api-linter
