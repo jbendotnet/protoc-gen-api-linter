@@ -1,0 +1,52 @@
+[
+    {
+        "file_path": "sample/service/v1alpha1/service.proto",
+        "problems": [
+            {
+                "message": "Proto package and directory structure mismatch: The proto package must match the proto directory structure.",
+                "location": {
+                    "start_position": {
+                        "line_number": 1,
+                        "column_number": 1
+                    },
+                    "end_position": {
+                        "line_number": 1,
+                        "column_number": 1
+                    }
+                },
+                "rule_id": "core::0191::proto-package",
+                "rule_doc_uri": "https://linter.aip.dev/191/proto-package"
+            },
+            {
+                "message": "Method \"GetBookRequest\" has no `name` field",
+                "location": {
+                    "start_position": {
+                        "line_number": 4,
+                        "column_number": 1
+                    },
+                    "end_position": {
+                        "line_number": 7,
+                        "column_number": 1
+                    }
+                },
+                "rule_id": "core::0131::request-name-required",
+                "rule_doc_uri": "https://linter.aip.dev/131/request-name-required"
+            },
+            {
+                "message": "Unexpected field: Get RPCs must only contain fields explicitly described in https://aip.dev/131, not \"book\".",
+                "location": {
+                    "start_position": {
+                        "line_number": 6,
+                        "column_number": 3
+                    },
+                    "end_position": {
+                        "line_number": 6,
+                        "column_number": 18
+                    }
+                },
+                "rule_id": "core::0131::request-unknown-fields",
+                "rule_doc_uri": "https://linter.aip.dev/131/request-unknown-fields"
+            }
+        ]
+    }
+]

@@ -15,7 +15,7 @@ buf build internal/apilinter/testdata/ --output internal/apilinter/testdata/prot
 First, you need to generate the binary:
 
 ```
-go build -o bin/protoc-gen-api-linter cmd/protoc-gen-api-linter/main.go
+go install ./cmd/protoc-gen-api-linter
 ```
 
 > `buf.gen.yaml` is configured in this repo to use the binary in `bin/`

@@ -5,6 +5,5 @@ managed:
     default: github.com/jbendotnet/protoc-gen-api-linter/internal/gen/proto/go
 plugins:
   - name: api-linter
-    out: reports/
+    out: gen/reports
     opt: paths=source_relative
-    path: ./bin/protoc-gen-api-linter
