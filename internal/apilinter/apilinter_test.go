@@ -28,10 +28,11 @@ import (
 
 func TestFileLinter_LintFiles(t *testing.T) {
 	tests := map[string]struct {
-		protoFile string
-		out       map[string][]string
+		protoFile                   string
+		enabledRules, disabledRules []string
+		out                         map[string][]string
 	}{
-		"lint two services": {
+		"lint with defaults": {
 			out: map[string][]string{
 				"service.proto": {
 					"core::0131::request-unknown-fields",
@@ -43,6 +44,35 @@ func TestFileLinter_LintFiles(t *testing.T) {
 					"core::0192::has-comments",
 					"core::0192::has-comments",
 				},
+			},
+		},
+		"lint with some rules disabled": {
+			disabledRules: []string{
+				"core::0131::request-name-required",
+				"core::0131::request-name-behavior",
+				"core::0131::request-name-reference",
+			},
+			out: map[string][]string{
+				"service.proto": {
+					"core::0131::request-unknown-fields",
+				},
+				"service_ok.proto": {
+					"core::0192::has-comments",
+					"core::0192::has-comments",
+				},
+			},
+		},
+		"lint with all expected rules disabled": {
+			disabledRules: []string{
+				"core::0131::request-unknown-fields",
+				"core::0131::request-name-required",
+				"core::0131::request-name-behavior",
+				"core::0131::request-name-reference",
+				"core::0192::has-comments",
+			},
+			out: map[string][]string{
+				"service.proto":    {},
+				"service_ok.proto": {},
 			},
 		},
 	}
@@ -67,7 +97,11 @@ func TestFileLinter_LintFiles(t *testing.T) {
 				t.Fatalf("protogen.New: %s", err)
 			}
 
-			fl, err := NewFileLinter()
+			opts := LinterOptions{
+				EnabledRules:  test.enabledRules,
+				DisabledRules: test.disabledRules,
+			}
+			fl, err := NewLinter(opts)
 			if err != nil {
 				t.Fatal(err)
 			}
