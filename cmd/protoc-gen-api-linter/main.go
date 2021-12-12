@@ -30,30 +30,28 @@ type config struct {
 	ReportPrettyPrint    bool
 }
 
+var cfg config
+
 func main() {
 	// set logger to pint to stderr
 	log.SetOutput(os.Stderr)
-
-	var cfg config
 	fs := flag.NewFlagSet(appName, flag.ExitOnError)
 	fs.BoolVar(&cfg.PrintVersion, "version", false, "Print version and exit.")
 	fs.Var(&cfg.LinterEnableRule, "enable_rule", "Enable a rule with the given name.\nMay be specified multiple times.")
 	fs.Var(&cfg.LinterDisableRule, "disable_rule", "Disable a rule with the given name.\nMay be specified multiple times.")
 	fs.StringVar(&cfg.PluginReportFilename, "report_filename", defaultReportFilename, "Disable a rule with the given name.\nMay be specified multiple times.")
 	fs.BoolVar(&cfg.ReportPrettyPrint, "report_pretty_print", false, "Pretty print JSON reports")
-
 	if cfg.PrintVersion {
 		fmt.Printf("Version %v, commit %v, built at %v\n", version, commit, date)
 		os.Exit(0)
 	}
 
-	// TODO work out where the ordering issue is with the FlagSet
-	protogen.Options{ParamFunc: fs.Set}.Run(runPlugin(&cfg))
+	protogen.Options{ParamFunc: fs.Set}.Run(runPlugin)
 }
 
 // runPlugin configures our plugin instance and returns a
 // well configured Run func
-func runPlugin(cfg *config) func(gen *protogen.Plugin) error {
+func runPlugin(gen *protogen.Plugin) error {
 	opts := apilinter.PluginOptions{
 		Linter: apilinter.LinterOptions{
 			EnabledRules:  cfg.LinterEnableRule.Values(),
@@ -65,10 +63,7 @@ func runPlugin(cfg *config) func(gen *protogen.Plugin) error {
 
 	plg, err := apilinter.NewPlugin(opts)
 	if err != nil {
-		return func(gen *protogen.Plugin) error {
-			return fmt.Errorf("runPlugin: %w", err)
-		}
+		return fmt.Errorf("runPlugin: %w", err)
 	}
-
-	return plg.Run
+	return plg.Run(gen)
 }
