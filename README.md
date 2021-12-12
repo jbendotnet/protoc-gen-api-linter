@@ -37,5 +37,6 @@ gen
 
 - [x] Expose base `api-linter` functionality
 - [x] Add support for enabling and disabling one or more rules
+- [ ] Add optional non-zero exit behaviour to halt code-generation process
 - [ ] Add support for using a local config file
 - [ ] Add to Buf BSR for remote code generation
