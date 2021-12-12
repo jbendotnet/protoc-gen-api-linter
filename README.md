@@ -36,5 +36,5 @@ gen
 ## Roadmap
 
 - [x] Expose base `api-linter` functionality
-- [x] Add proto opts for enabling and disabling one or more rules
-- [ ] Add proto opt for local config file
+- [x] Add support for enabling and disabling one or more rules
+- [ ] Add support for using a local config file
