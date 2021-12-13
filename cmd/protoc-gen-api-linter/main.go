@@ -75,8 +75,7 @@ func main() {
 	protogen.Options{ParamFunc: fs.Set}.Run(runPlugin)
 }
 
-// runPlugin configures our plugin instance and returns a
-// well configured Run func
+// runPlugin configures our plugin and runs it
 func runPlugin(gen *protogen.Plugin) error {
 	opts := apilinter.PluginOptions{
 		Linter: apilinter.LinterOptions{
@@ -96,9 +95,9 @@ func runPlugin(gen *protogen.Plugin) error {
 	if err != nil {
 		return fmt.Errorf("runPlugin: %w", err)
 	}
-
 	if !ok && cfg.ExitOnError {
 		return fmt.Errorf("linting problems found, check report: %s", cfg.PluginReportFilename)
 	}
+
 	return nil
 }
