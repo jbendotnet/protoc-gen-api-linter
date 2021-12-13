@@ -11,4 +11,5 @@ plugins:
       - report_filename=apilinter-report.json
       - disable_rule=core::0131::request-unknown-fields
       - disable_rule=core::0131::request-name-required
+      - exit_on_error=true
     out: gen/reports
