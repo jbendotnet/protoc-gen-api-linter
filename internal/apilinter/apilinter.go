@@ -64,7 +64,7 @@ func (fl *Linter) LintFiles(files []*protogen.File) ([]lint.Response, error) {
 	}
 	fileDescByName, err := desc.CreateFileDescriptors(protos)
 	if err != nil {
-		return nil, fmt.Errorf("desc.CreateFileDescriptors: %w", err)
+		return nil, fmt.Errorf("linter.LintFiles: desc.CreateFileDescriptors: %w", err)
 	}
 
 	// convert map into files
@@ -76,7 +76,7 @@ func (fl *Linter) LintFiles(files []*protogen.File) ([]lint.Response, error) {
 	// Lint the proto file
 	resp, err := fl.linter.LintProtos(fdList...)
 	if err != nil {
-		return nil, fmt.Errorf("l.LintProtos: %w", err)
+		return nil, fmt.Errorf("linter.LintFiles: lint.LintProtos: %w", err)
 	}
 
 	return resp, nil
