@@ -17,7 +17,27 @@ buf build internal/apilinter/testdata/ --output internal/apilinter/testdata/prot
 First, you need to generate the binary:
 
 ```
-go install ./cmd/protoc-gen-api-linter
+$ go install ./cmd/protoc-gen-api-linter
+```
+
+```
+$ protoc-gen-api-linter help
+Usage of protoc-gen-api-linter:
+  -disable_rule value
+    	Disable a rule with the given name.
+    	May be specified multiple times.
+  -enable_rule value
+    	Enable a rule with the given name.
+    	May be specified multiple times.
+  -exit_on_error
+    	Exit on first error (default true)
+  -report_filename string
+    	Disable a rule with the given name.
+    	May be specified multiple times. (default "api_linter.json")
+  -report_pretty_print
+    	Pretty print JSON reports
+  -version
+    	Print version and exit.
 ```
 
 > `buf.gen.yaml` is configured in this repo to use the binary installed in `$GOPATH/bin`
