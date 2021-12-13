@@ -1,3 +1,17 @@
+// Copyright 2020-2021 Jon Bennett
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
 package apilinter
 
 import (
@@ -10,42 +24,39 @@ import (
 	"google.golang.org/protobuf/compiler/protogen"
 )
 
-type FileLinter struct {
+type LinterOptions struct {
+	EnabledRules  []string
+	DisabledRules []string
+}
+
+type Linter struct {
 	linter *lint.Linter
 }
 
-func NewFileLinter() (*FileLinter, error) {
-	reg := lint.NewRuleRegistry()
-	if err := rules.Add(reg); err != nil {
+func NewLinter(opts LinterOptions) (*Linter, error) {
+	// set up default rules
+	lintRules := lint.NewRuleRegistry()
+	if err := rules.Add(lintRules); err != nil {
 		return nil, fmt.Errorf("rules.Add: %w", err)
 	}
-
-	linter := lint.New(reg, lint.Configs{})
-	return &FileLinter{linter: linter}, nil
-}
-
-func (fl *FileLinter) LintFile(gen *protogen.Plugin, file *protogen.File) ([]lint.Problem, error) {
-	// convert protogen.File to desc.FileDescriptor
-	fd, err := desc.CreateFileDescriptor(file.Proto)
-	if err != nil {
-		return nil, fmt.Errorf("l.LintProtos: proto=%s: %w", file.Desc.Name(), err)
+	// configure linter
+	lintConfigs := lint.Configs{}
+	if len(opts.EnabledRules) > 0 {
+		lintConfigs = append(lintConfigs, lint.Config{
+			EnabledRules: opts.EnabledRules,
+		})
+	}
+	if len(opts.DisabledRules) > 0 {
+		lintConfigs = append(lintConfigs, lint.Config{
+			DisabledRules: opts.DisabledRules,
+		})
 	}
 
-	// Lint the proto file
-	resp, err := fl.linter.LintProtos(fd)
-	switch {
-	case err != nil:
-		return nil, fmt.Errorf("l.LintProtos: proto=%s: %w", file.Desc.Name(), err)
-	case resp == nil:
-		return nil, nil
-	default:
-		return resp[0].Problems, nil
-	}
-
-	// TODO lint all protos and report all errors to generate a report
+	linter := lint.New(lintRules, lintConfigs)
+	return &Linter{linter: linter}, nil
 }
 
-func (fl *FileLinter) LintFiles(files []*protogen.File) ([]lint.Response, error) {
+func (fl *Linter) LintFiles(files []*protogen.File) ([]lint.Response, error) {
 	// convert protogen.File's to desc.FileDescriptor's
 	var protos []*descriptor.FileDescriptorProto
 	for _, f := range files {
@@ -72,6 +83,4 @@ func (fl *FileLinter) LintFiles(files []*protogen.File) ([]lint.Response, error)
 	default:
 		return resp, nil
 	}
-
-	// TODO lint all protos and report all errors to generate a report
 }

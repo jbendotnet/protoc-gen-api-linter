@@ -1,8 +1,10 @@
 # Protoc Gen API Linter
 
+**Currently early ALPHA, APIs can and will change**
+
 Wraps https://github.com/googleapis/api-linter as a protoc plugin.
 
-## Template unit tests
+## Protosets for unit tests
 
 If you add or change the protos in `internal/apilinter/testdata` do this to regenerate:
 
@@ -15,19 +17,27 @@ buf build internal/apilinter/testdata/ --output internal/apilinter/testdata/prot
 First, you need to generate the binary:
 
 ```
-go build -o bin/protoc-gen-api-linter cmd/protoc-gen-api-linter/main.go
+go install ./cmd/protoc-gen-api-linter
 ```
 
-> `buf.gen.yaml` is configured in this repo to use the binary in `bin/`
+> `buf.gen.yaml` is configured in this repo to use the binary installed in `$GOPATH/bin`
 
 Then run `buf generate --debug -vv` and you should see the following:
 
 ```
-$ tree reports/
-reports/
-└── api_linter_report.json
+$ tree gen
+gen
+└── reports
+    └── apilinter-report.json
 
-0 directories, 1 file
+1 directory, 1 file
 ```
 
+## Roadmap
 
+- [x] Expose base `api-linter` functionality
+- [x] Add support for enabling and disabling one or more rules
+- [x] Add optional non-zero exit behaviour to halt code-generation process
+- [ ] Add verbose output option
+- [ ] Add support for using a local config file
+- [ ] Add to Buf BSR for remote code generation
