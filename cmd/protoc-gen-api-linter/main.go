@@ -67,6 +67,13 @@ func main() {
 		os.Exit(1)
 	}
 
+	// Show help
+	const help = "help"
+	if len(os.Args) == 2 && os.Args[1] == help {
+		fs.Usage()
+		os.Exit(0)
+	}
+
 	if cfg.PrintVersion {
 		fmt.Printf("Version %v, commit %v, built at %v\n", version, commit, date)
 		os.Exit(0)
