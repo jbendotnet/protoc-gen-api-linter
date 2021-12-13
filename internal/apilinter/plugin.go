@@ -68,8 +68,8 @@ func (p *Plugin) Run(gen *protogen.Plugin) (bool, error) {
 	}
 
 	// if we had problems, we need to indicate that to callers
-	protosOk := res == nil
-	return protosOk, nil
+	ok := res == nil
+	return ok, nil
 }
 
 func getMarshaller(pretty bool) func(v interface{}) ([]byte, error) {
