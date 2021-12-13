@@ -1,9 +1,9 @@
 GO_BINS := $(GO_BINS) cmd/protoc-gen-api-linter
-DOCKER_BINS := $(DOCKER_BINS) foo
+DOCKER_BINS := $(DOCKER_BINS) protoc-gen-api-linter
 
 LICENSE_HEADER_LICENSE_TYPE := apache
 LICENSE_HEADER_COPYRIGHT_HOLDER := Jon Bennett
-LICENSE_HEADER_YEAR_RANGE := 2020-2021
+LICENSE_HEADER_YEAR_RANGE := 2021
 LICENSE_HEADER_IGNORES := \/testdata
 
 include make/go/bootstrap.mk
