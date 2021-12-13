@@ -75,12 +75,9 @@ func (fl *Linter) LintFiles(files []*protogen.File) ([]lint.Response, error) {
 
 	// Lint the proto file
 	resp, err := fl.linter.LintProtos(fdList...)
-	switch {
-	case err != nil:
+	if err != nil {
 		return nil, fmt.Errorf("l.LintProtos: %w", err)
-	case resp == nil:
-		return nil, nil
-	default:
-		return resp, nil
 	}
+
+	return resp, nil
 }
