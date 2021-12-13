@@ -45,6 +45,7 @@ type config struct {
 	LinterDisabledRules  flagvar.StringSet
 	PluginReportFilename string
 	ReportPrettyPrint    bool
+	ExitOnError          bool
 }
 
 var cfg config
@@ -59,6 +60,7 @@ func main() {
 	fs.Var(&cfg.LinterDisabledRules, "disable_rule", "Disable a rule with the given name.\nMay be specified multiple times.")
 	fs.StringVar(&cfg.PluginReportFilename, "report_filename", defaultReportFilename, "Disable a rule with the given name.\nMay be specified multiple times.")
 	fs.BoolVar(&cfg.ReportPrettyPrint, "report_pretty_print", false, "Pretty print JSON reports")
+	fs.BoolVar(&cfg.ExitOnError, "exit_on_error", true, "Exit on first error")
 	if err := fs.Parse(os.Args[1:]); err != nil {
 		fs.Usage()
 		fmt.Printf("invalid args, err: %s", err)
@@ -89,5 +91,14 @@ func runPlugin(gen *protogen.Plugin) error {
 	if err != nil {
 		return fmt.Errorf("runPlugin: %w", err)
 	}
-	return plg.Run(gen)
+
+	ok, err := plg.Run(gen)
+	if err != nil {
+		return fmt.Errorf("runPlugin: %w", err)
+	}
+
+	if !ok && cfg.ExitOnError {
+		return fmt.Errorf("linting problems found, check report: %s", cfg.PluginReportFilename)
+	}
+	return nil
 }
