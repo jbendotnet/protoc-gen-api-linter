@@ -32,7 +32,7 @@ Usage of protoc-gen-api-linter:
   -exit_on_error
     	Exit on first error (default true)
   -report_filename string
-    	Disable a rule with the given name. (default "api_linter.json")
+    	Set the filename of the JSON report (default "api_linter.json")
   -report_pretty_print
     	Pretty print JSON reports
   -version
