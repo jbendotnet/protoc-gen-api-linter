@@ -41,3 +41,4 @@ gen
 - [ ] Add verbose output option
 - [ ] Add support for using a local config file
 - [ ] Add to Buf BSR for remote code generation
+- [ ] Add Goreleaser
