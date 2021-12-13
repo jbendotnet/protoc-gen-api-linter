@@ -45,6 +45,9 @@ func NewPlugin(opts PluginOptions) (*Plugin, error) {
 // Run lints protos and generates reports
 // returns a boolean to indicate if problems were found
 // only returns an error if it did indeed error
+// return true, nil = all protos linted ok and no errors
+// return false, nil = one or more problems found in one or more protos
+// return false, err = we encountered an error preventing linting
 func (p *Plugin) Run(gen *protogen.Plugin) (bool, error) {
 	res, err := p.linter.LintFiles(gen.Files)
 	if err != nil {
