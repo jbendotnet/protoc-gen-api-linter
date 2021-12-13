@@ -12,10 +12,25 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-syntax = "proto3";
+package jsonutil
 
-// Incorrect.
-message GetBookRequest {
-  // This is wrong; it should be spelled `name`.
-  string book = 1;
+import (
+	"encoding/json"
+	"fmt"
+)
+
+func PrettyPrint(in interface{}) {
+	s, err := MarshalPretty(in)
+	if err != nil {
+		panic(err)
+	}
+	fmt.Printf("%s\n", s)
+}
+
+func MarshalPretty(in interface{}) ([]byte, error) {
+	pp, err := json.MarshalIndent(in, "", "    ")
+	if err != nil {
+		return nil, err
+	}
+	return pp, nil
 }
