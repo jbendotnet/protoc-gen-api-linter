@@ -6,7 +6,7 @@ require (
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/golang/protobuf v1.5.2
 	github.com/google/go-cmp v0.5.7
-	github.com/googleapis/api-linter v1.29.5
+	github.com/googleapis/api-linter v1.30.0
 	github.com/jhump/protoreflect v1.12.0
 	github.com/sgreben/flagvar v1.10.1
 	github.com/stretchr/testify v1.7.0 // indirect
