@@ -1,0 +1,6 @@
+[
+  {
+    "included_paths": ["tests/**/*.proto"],
+    "disabled_rules": ["core::0140::lower-snake"]
+  }
+]
