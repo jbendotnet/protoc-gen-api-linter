@@ -23,6 +23,8 @@ $ go install ./cmd/protoc-gen-api-linter
 ```
 $ protoc-gen-api-linter help
 Usage of protoc-gen-api-linter:
+  -config_path string
+    	Set the filepath to the linter config
   -disable_rule value
     	Disable a rule with the given name.
     	May be specified multiple times.
