@@ -43,6 +43,7 @@ type config struct {
 	PrintVersion         bool
 	LinterEnabledRules   flagvar.StringSet
 	LinterDisabledRules  flagvar.StringSet
+	LinterConfigPath      string
 	PluginReportFilename string
 	ReportPrettyPrint    bool
 	ExitOnError          bool
@@ -58,6 +59,7 @@ func main() {
 	fs.BoolVar(&cfg.PrintVersion, "version", false, "Print version and exit.")
 	fs.Var(&cfg.LinterEnabledRules, "enable_rule", "Enable a rule with the given name.\nMay be specified multiple times.")
 	fs.Var(&cfg.LinterDisabledRules, "disable_rule", "Disable a rule with the given name.\nMay be specified multiple times.")
+	fs.StringVar(&cfg.LinterConfigPath, "config_path", "", "Set the filepath to the linter config")
 	fs.StringVar(&cfg.PluginReportFilename, "report_filename", defaultReportFilename, "Set the filename of the JSON report")
 	fs.BoolVar(&cfg.ReportPrettyPrint, "report_pretty_print", false, "Pretty print JSON reports")
 	fs.BoolVar(&cfg.ExitOnError, "exit_on_error", true, "Exit on first error")

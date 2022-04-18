@@ -27,6 +27,7 @@ import (
 type LinterOptions struct {
 	EnabledRules  []string
 	DisabledRules []string
+	ConfigPath     string
 }
 
 type Linter struct {
@@ -41,6 +42,15 @@ func NewLinter(opts LinterOptions) (*Linter, error) {
 	}
 	// configure linter
 	lintConfigs := lint.Configs{}
+	// load from config file
+	if opts.ConfigPath != "" {
+		config, err := lint.ReadConfigsFromFile(opts.ConfigPath)
+		if err != nil {
+			return nil, err
+		}
+		lintConfigs = append(lintConfigs, config...)
+	}
+
 	if len(opts.EnabledRules) > 0 {
 		lintConfigs = append(lintConfigs, lint.Config{
 			EnabledRules: opts.EnabledRules,

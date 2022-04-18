@@ -17,6 +17,7 @@ package apilinter
 import (
 	"io/ioutil"
 	"sort"
+	"strings"
 	"testing"
 
 	"github.com/google/go-cmp/cmp"
@@ -25,6 +26,44 @@ import (
 	"google.golang.org/protobuf/types/descriptorpb"
 	"google.golang.org/protobuf/types/pluginpb"
 )
+
+func TestNewLinter(t *testing.T) {
+	tests := map[string]struct{
+		opts LinterOptions
+		err  string
+	}{
+		"Should raise missing file error": {
+			opts: LinterOptions{
+				ConfigPath: "config.json",
+			},
+			err: "no such file or directory",
+		},
+		"Should raise invalid config format error": {
+			opts: LinterOptions{
+				ConfigPath: "config.text",
+			},
+			err: "unsupported format",
+		},
+		"Should load valid config": {
+			opts: LinterOptions{
+				ConfigPath: "./testdata/config.valid.yaml",
+			},
+			err: "",
+		},
+	}
+	for name, test := range tests {
+		t.Run(name, func(t *testing.T) {
+			_, err := NewLinter(test.opts)
+			switch {
+			case err != nil && test.err != "" && strings.Contains(err.Error(), test.err):
+				return
+			case err != nil:
+				t.Fatal(err)
+			}
+
+		})
+	}
+}
 
 func TestFileLinter_LintFiles(t *testing.T) {
 	tests := map[string]struct {

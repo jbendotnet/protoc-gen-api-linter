@@ -9,6 +9,7 @@ plugins:
       - paths=source_relative
       - report_pretty_print=true
       - report_filename=apilinter-report.json
+      - config_path=lint-config-sample.yaml
       - disable_rule=core::0131::request-unknown-fields
       - disable_rule=core::0131::request-name-required
       - exit_on_error=true
