@@ -60,6 +60,6 @@ gen
 - [x] Add support for enabling and disabling one or more rules
 - [x] Add optional non-zero exit behaviour to halt code-generation process
 - [ ] Add verbose output option
-- [ ] Add support for using a local config file
+- [x] Add support for using a local config file
 - [ ] Add to Buf BSR for remote code generation
 - [ ] Add Goreleaser
