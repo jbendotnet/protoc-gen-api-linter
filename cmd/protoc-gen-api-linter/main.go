@@ -43,7 +43,7 @@ type config struct {
 	PrintVersion         bool
 	LinterEnabledRules   flagvar.StringSet
 	LinterDisabledRules  flagvar.StringSet
-	LinterConfigPath      string
+	LinterConfigPath     string
 	PluginReportFilename string
 	ReportPrettyPrint    bool
 	ExitOnError          bool

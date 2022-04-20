@@ -28,7 +28,7 @@ import (
 )
 
 func TestNewLinter(t *testing.T) {
-	tests := map[string]struct{
+	tests := map[string]struct {
 		opts LinterOptions
 		err  string
 	}{
@@ -60,7 +60,6 @@ func TestNewLinter(t *testing.T) {
 			case err != nil:
 				t.Fatal(err)
 			}
-
 		})
 	}
 }

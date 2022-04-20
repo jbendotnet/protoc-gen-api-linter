@@ -27,7 +27,7 @@ import (
 type LinterOptions struct {
 	EnabledRules  []string
 	DisabledRules []string
-	ConfigPath     string
+	ConfigPath    string
 }
 
 type Linter struct {
