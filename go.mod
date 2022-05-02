@@ -5,7 +5,7 @@ go 1.16
 require (
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/golang/protobuf v1.5.2
-	github.com/google/go-cmp v0.5.7
+	github.com/google/go-cmp v0.5.8
 	github.com/googleapis/api-linter v1.30.1
 	github.com/jhump/protoreflect v1.12.0
 	github.com/sgreben/flagvar v1.10.1
