@@ -10,7 +10,7 @@ jobs:
           fetch-depth: 0
       - name: setup-go
         if: success()
-        uses: actions/setup-go@v3
+        uses: actions/setup-go@v4
         with:
           go-version: 1.17.3
       # - name: ci
