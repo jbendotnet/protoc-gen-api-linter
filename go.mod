@@ -8,5 +8,5 @@ require (
 	github.com/googleapis/api-linter v1.46.0
 	github.com/jhump/protoreflect v1.12.0
 	github.com/sgreben/flagvar v1.10.1
-	google.golang.org/protobuf v1.30.0
+	google.golang.org/protobuf v1.31.0
 )
